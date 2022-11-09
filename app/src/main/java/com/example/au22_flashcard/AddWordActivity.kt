@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -36,13 +37,12 @@ class AddWordActivity : AppCompatActivity(), CoroutineScope {
         val addBtn = findViewById<Button>(R.id.addWordBtn)
         addBtn.setOnClickListener {
             val newWord = Word(0, engText.text.toString(), sweText.text.toString())
-            Log.d("!!!", "swe : ${newWord.swedish} + eng ${newWord.english}")
             launch {
                 saveNewWord(newWord)
-
+                finish()
             }
-            Log.d("!!!", "Adding...")
-            finish()
+            Toast.makeText(this,"Loading...",Toast.LENGTH_SHORT).show()
+
         }
 
 
@@ -51,7 +51,6 @@ class AddWordActivity : AppCompatActivity(), CoroutineScope {
     fun saveNewWord(word: Word) {
         launch(Dispatchers.IO) {
             db.wordDao().insert(word)
-            Log.d("!!!", "New word saved")
         }
 
 

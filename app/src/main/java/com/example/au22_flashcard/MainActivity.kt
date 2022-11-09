@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.view.isVisible
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -38,12 +39,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
 
-
-
+        val hintText = findViewById<TextView>(R.id.hintText)
+        val hintText2 = findViewById<TextView>(R.id.hintText2)
+        hintText.isVisible = true
+        hintText2.isVisible = true
         wordView = findViewById(R.id.wordTextView)
-
         wordView.setOnClickListener {
             revealTranslation()
+            hintText.isVisible = false
+            hintText2.isVisible = false
+
         }
 
     }
@@ -54,7 +59,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun fillList() {
-        Log.d("!!!", "FillList")
+        wordList.clear()
         val newList = loadAllItems()
         launch {
             val listOfword = newList.await()
@@ -67,19 +72,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     fun loadAllItems(): Deferred<List<Word>> =
         async(Dispatchers.IO) {
-            Log.d("!!!", "loadAllItems")
             db.wordDao().getAllItems()
         }
 
     fun showNewWord() {
-        Log.d("!!!", "showNewWord")
 
         currentWord = getNewWord()
         wordView.text = currentWord?.swedish
     }
 
     fun getNewWord(): Word {
-        Log.d("!!!", "getNewWord")
         if (wordList.size == usedWords.size) {
             usedWords.clear()
         }
@@ -98,12 +100,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
 
     fun revealTranslation() {
-        Log.d("!!!", "revealTranslation")
         wordView.text = currentWord?.english
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        Log.d("!!!", "onTouchEvent")
         if (event?.action == MotionEvent.ACTION_UP) {
             showNewWord()
         }
