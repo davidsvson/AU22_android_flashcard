@@ -11,10 +11,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var wordView : TextView
     var currentWord : Word? = null
     val wordList = WordList()
+    lateinit var db : AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        db = AppDatabase.getInstance(this)
+
 
         wordView = findViewById(R.id.wordTextView)
 
@@ -48,6 +52,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+// Vad ska göras?
+    //1. Skapa en ny aktivitet där ett nytt ord får skrivas in
+
+    //2. spara det nya ordet i databasen.
+
+    //3. i main activity läs in alla ord från databasen.
+
+
+    //. (använd corooutiner när ni läser och skriver itll databasen se tidigare exempel)
 
 
 
